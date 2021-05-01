@@ -73,7 +73,7 @@ guna untuk menjalankan project ini. Pastikan anda telah mengaktifkan XAMPP
 ---
 
 ### Dokumentasi Api
-> Kamu bisa melihat dokumentasi api di sini. [Here](https://documenter.getpostman.com/view/13256965/TzRLkqi4)
+Kamu bisa melihat dokumentasi api di sini. [Here](https://documenter.getpostman.com/view/13256965/TzRLkqi4)
 ---
 
 ## Frontend
