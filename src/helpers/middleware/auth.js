@@ -4,7 +4,7 @@ module.exports = {
   authentication: (req, res, next) => {
     const token = req.headers.token;
     // const token = req.cookies.token;
-    console.log(token);
+    // console.log(token);
 
     if (!token) {
       //   console.log(token);
@@ -17,7 +17,6 @@ module.exports = {
           res.userAccess = decoded.access;
           req.email = decoded.email;
           req.id = decoded.id;
-          console.log(decoded.email);
           next();
         }
       });
