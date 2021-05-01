@@ -2,8 +2,7 @@
 
 Project membuat website chating seperti aplikasi telegram yang dapat diguanakan untuk personal chating secara realtime.
 
-### Deploy
-Silahkan klik link berikut [ini](https://github.com/nevalenaginda/backend-react-chat)
+---
 
 ### Modules
 1. [Expressjs]
@@ -77,7 +76,12 @@ Kamu bisa melihat dokumentasi api [di sini](https://documenter.getpostman.com/vi
 
 ---
 
-## Frontend
+### Frontend
 Silahkan klik [di sini](https://github.com/nevalenaginda/frontend-react-chat)
+
+---
+
+### Deploy
+Silahkan klik link berikut [ini](https://github.com/nevalenaginda/backend-react-chat)
 
 ---
