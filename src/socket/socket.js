@@ -25,6 +25,7 @@ module.exports = (server) => {
     } = require("../models/users");
     const {
       mGetChat,
+	  mGetLastChat,
       mSendChat,
       mDetailChat,
       mDeleteChat,
@@ -90,6 +91,7 @@ module.exports = (server) => {
       console.log(`Room ID ${roomId} joined`);
       socket.join(roomId);
     });
+	
     // Pencarian Nama
     socket.on("search-name", (data) => {
       mSearchUser(data)
@@ -118,6 +120,7 @@ module.exports = (server) => {
       mGetChat(data)
         .then((res) => {
           // Kirrim ke Room ID
+		 
           io.to(data.roomId).emit("res-get-list-chat", res);
         })
         .catch((err) => {
@@ -125,6 +128,16 @@ module.exports = (server) => {
         });
     });
 
+//Ambil last chat
+socket.on("get-last-chat", (data) =>{
+	console.log("Fetching data last chat From DB", data);
+	mGetLastChat(data).then((res)=>{
+		 console.log('last chat', res)
+		io.to(data.roomId).emit("res-get-last-chat", res);
+	}).catch((err)=>{
+		console.log(err)
+	});
+});
     // Kirim Pesan
     socket.on("send-message", (data) => {
       console.log("Sending chat data to DB");
@@ -144,6 +157,7 @@ module.exports = (server) => {
                         "res-target-data",
                         resTarget[0]
                       );
+					  console.log('roomid target', resTarget[0].roomId)
                       io.to(resTarget[0].roomId).emit("res-new-chat", {
                         data: "New Message",
                         from: resSender[0].name,
@@ -262,6 +276,7 @@ module.exports = (server) => {
       });
     // Hapus Chat
     socket.on("delete-chat", (data) => {
+		//console.log('menjalankan delete chat ', data)
       mDeleteChat(data.id)
         .then((res1) => {
           mGetChat(data)
@@ -270,14 +285,20 @@ module.exports = (server) => {
                 .then((resTarget) => {
                   mDetailUser(data.senderId)
                     .then((resSender) => {
-                      io.to(response[0].targetRoomId).emit(
+						//console.log('ini jalan gak', resTarget[0])
+                      io.to(resTarget[0].roomId).emit(
                         "res-get-list-chat",
                         response
                       );
-                      io.to(response[0].senderRoomId).emit(
+                      io.to(resSender[0].roomId).emit(
                         "res-get-list-chat",
                         response
                       );
+					  io.to(resSender[0].roomId).emit(
+                        "res-delete-chat",
+                        'Sucess delete chat.'
+                      );
+					  
                     })
                     .catch((err) => {
                       // Error dari Sender

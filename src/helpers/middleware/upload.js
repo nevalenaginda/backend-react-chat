@@ -13,7 +13,7 @@ const multerStorage = multer.diskStorage({
 
 const upload = multer({
   storage: multerStorage,
-  limits: { fieldSize: 8 * 1024 * 1024 }, // 8 MB
+  limits: { fileSize: 2 * 1024 * 1024 }, // 8 MB
   fileFilter: (req, file, cb) => {
     const ext = /\.(gif|jpe?g|png)$/i.test(
       `${Date.now()}${path.extname(file.originalname)}`
@@ -31,7 +31,7 @@ const singleUpload = (req, res, next) => {
   const single = upload.single("image");
   single(req, res, (err) => {
     if (err) {
-      failed(res, "Upload Failed", err);
+      failed(res, "Upload Failed. File format must be jpg or png and max size is 2 mb.", err);
     } else {
       next();
     }

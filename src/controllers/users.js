@@ -49,6 +49,7 @@ module.exports = {
                   name: response[0].name,
                   id: response[0].id,
                   email: response[0].email,
+				  roomId: response[0].roomId,
                 },
               });
             }
