@@ -82,6 +82,6 @@ Silahkan klik [di sini](https://github.com/nevalenaginda/frontend-react-chat)
 ---
 
 ### Deploy
-Silahkan klik link berikut [ini](https://github.com/nevalenaginda/backend-react-chat)
+Silahkan klik link berikut [ini](http://100.25.29.134:5010/)
 
 ---
