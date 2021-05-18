@@ -25,10 +25,12 @@ module.exports = (server) => {
     } = require("../models/users");
     const {
       mGetChat,
-	  mGetLastChat,
+      mGetLastChat,
       mSendChat,
       mDetailChat,
       mDeleteChat,
+      createChat,
+      getMessageByIdSender,
     } = require("../models/chat");
 
     //kasih notif User ada Yang Online
@@ -91,7 +93,7 @@ module.exports = (server) => {
       console.log(`Room ID ${roomId} joined`);
       socket.join(roomId);
     });
-	
+
     // Pencarian Nama
     socket.on("search-name", (data) => {
       mSearchUser(data)
@@ -120,7 +122,7 @@ module.exports = (server) => {
       mGetChat(data)
         .then((res) => {
           // Kirrim ke Room ID
-		 
+
           io.to(data.roomId).emit("res-get-list-chat", res);
         })
         .catch((err) => {
@@ -128,16 +130,18 @@ module.exports = (server) => {
         });
     });
 
-//Ambil last chat
-socket.on("get-last-chat", (data) =>{
-	console.log("Fetching data last chat From DB", data);
-	mGetLastChat(data).then((res)=>{
-		 console.log('last chat', res)
-		io.to(data.roomId).emit("res-get-last-chat", res);
-	}).catch((err)=>{
-		console.log(err)
-	});
-});
+    //Ambil last chat
+    socket.on("get-last-chat", (data) => {
+      console.log("Fetching data last chat From DB", data);
+      mGetLastChat(data)
+        .then((res) => {
+          console.log("last chat", res);
+          io.to(data.roomId).emit("res-get-last-chat", res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
     // Kirim Pesan
     socket.on("send-message", (data) => {
       console.log("Sending chat data to DB");
@@ -157,7 +161,7 @@ socket.on("get-last-chat", (data) =>{
                         "res-target-data",
                         resTarget[0]
                       );
-					  console.log('roomid target', resTarget[0].roomId)
+                      console.log("roomid target", resTarget[0].roomId);
                       io.to(resTarget[0].roomId).emit("res-new-chat", {
                         data: "New Message",
                         from: resSender[0].name,
@@ -189,94 +193,56 @@ socket.on("get-last-chat", (data) =>{
         });
     });
 
-    // Tambahkan Teman
-    socket.on("add-friends", (data) => {
-      const dataA = {
-        userId: data.userId,
-        targetId: data.targetId,
-        status: data.status,
+    socket.on("sendMessage", async (data, callback) => {
+      console.log("send Message", data);
+      const date = new Date();
+      const dayNow = moment(date).format("dddd");
+      const timeNow = moment(date).format("LT");
+      const dateNow = moment(date).format("LL");
+      const dataMessage = {
+        ...data,
+        time: timeNow,
+        day: dayNow,
+        date: dateNow,
       };
-      const dataB = {
-        userId: data.targetId,
-        targetId: data.userId,
-        status: data.status,
+      // console.log(dataMessage);
+      const send = {
+        senderId: dataMessage.senderId,
+        targetId: dataMessage.targetId,
+        message: dataMessage.message,
+        type: "send",
+        time: `${dataMessage.day}. ${dataMessage.time}`,
+        date: dateNow,
       };
-      mAddFriends(dataA)
-        .then((res1) => {
-          mAddFriends(dataB)
-            .then((res2) => {
-              mGetFriends(data.userId)
-                .then((resUser) => {
-                  io.to(data.userRoomId).emit("res-get-list-users", resUser);
-                  mGetFriends(data.targetId)
-                    .then((resTarget) => {
-                      io.to(data.targetRoomId).emit(
-                        "res-get-list-users",
-                        resTarget
-                      );
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }),
-      // Hapus Teman
-      socket.on("delete-friends", (data) => {
-        console.log(`Someone want to delete ${data}`);
-        const dataA = {
-          userId: data.userId,
-          targetId: data.targetId,
-          status: data.status,
-        };
-        const dataB = {
-          userId: data.targetId,
-          targetId: data.userId,
-          status: data.status,
-        };
-        mDeleteFriends(dataA)
-          .then((res1) => {
-            mDeleteFriends(dataB)
-              .then((res2) => {
-                mGetFriends(data.userId)
-                  .then((resUser) => {
-                    io.to(data.userRoomId).emit("res-get-list-users", resUser);
-                    mGetFriends(data.targetId)
-                      .then((resTarget) => {
-                        io.to(data.targetRoomId).emit(
-                          "res-get-list-users",
-                          resTarget
-                        );
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+      const receiver = {
+        senderId: dataMessage.targetId,
+        targetId: dataMessage.senderId,
+        message: dataMessage.message,
+        type: "receive",
+        time: `${dataMessage.day}. ${dataMessage.time}`,
+        date: dateNow,
+      };
+      await createChat(send);
+      await createChat(receiver);
+      const getMessagesIdFrom = await getMessageByIdSender(data.senderId);
+      const getMessagesIdTo = await getMessageByIdSender(data.targetId);
+      const result = [...getMessagesIdFrom, ...getMessagesIdTo];
+      const dataSender = await mDetailUser(data.senderId);
+      const dataTarget = await mDetailUser(data.targetId);
+      // const result = getMessagesIdFrom;
+      io.to(dataTarget[0].roomId).emit("res-new-chat", {
+        data: "New Message",
+        from: dataSender[0].name,
+        fromId: dataSender[0].id,
+        message: data.message,
       });
+      io.to(dataTarget[0].roomId).emit("receiverMessage", result);
+      callback(result);
+    });
+
     // Hapus Chat
     socket.on("delete-chat", (data) => {
-		//console.log('menjalankan delete chat ', data)
+      //console.log('menjalankan delete chat ', data)
       mDeleteChat(data.id)
         .then((res1) => {
           mGetChat(data)
@@ -285,7 +251,7 @@ socket.on("get-last-chat", (data) =>{
                 .then((resTarget) => {
                   mDetailUser(data.senderId)
                     .then((resSender) => {
-						//console.log('ini jalan gak', resTarget[0])
+                      //console.log('ini jalan gak', resTarget[0])
                       io.to(resTarget[0].roomId).emit(
                         "res-get-list-chat",
                         response
@@ -294,11 +260,10 @@ socket.on("get-last-chat", (data) =>{
                         "res-get-list-chat",
                         response
                       );
-					  io.to(resSender[0].roomId).emit(
+                      io.to(resSender[0].roomId).emit(
                         "res-delete-chat",
-                        'Sucess delete chat.'
+                        "Sucess delete chat."
                       );
-					  
                     })
                     .catch((err) => {
                       // Error dari Sender

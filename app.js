@@ -8,6 +8,7 @@ const app = express();
 const cors = require("cors");
 
 const userRoute = require("./src/routes/users");
+const chatRoute = require("./src/routes/chats");
 const { PORT } = require("./src/helpers/env");
 
 const httpServer = http.createServer(app);
@@ -20,6 +21,7 @@ app.use(morgan("dev"));
 
 //user route
 app.use(userRoute);
+app.use(chatRoute);
 // open route for public image
 app.use("/images", express.static("./public/images"));
 

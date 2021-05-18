@@ -10,6 +10,7 @@ const {
   getActivation,
   deleteActivation,
   setActiveUser,
+  mSearchUser,
 } = require("../models/users");
 const { success, failed, notFound } = require("../helpers/response");
 const mailer = require("../helpers/mailer");
@@ -49,7 +50,7 @@ module.exports = {
                   name: response[0].name,
                   id: response[0].id,
                   email: response[0].email,
-				  roomId: response[0].roomId,
+                  roomId: response[0].roomId,
                 },
               });
             }
@@ -250,7 +251,7 @@ module.exports = {
 
       mAllUser(id, searchParams, search, param, sort, offset, limit)
         .then((response) => {
-          const data = response.filter((el) => el.id != 1);
+          //const data = response.filter((el) => el.id != 1);
           const pagination = {
             page: page,
             limit: limit,
@@ -258,7 +259,7 @@ module.exports = {
             totalPage: Math.ceil(responseTotal[0].total / limit),
           };
           if (response.length > 0) {
-            success(res, data, pagination, "Get all users success");
+            success(res, response, pagination, "Get all users success");
           } else {
             notFound(res, "Data unavailable", data);
           }
@@ -429,5 +430,18 @@ module.exports = {
           failed(res, "Internal Server Error", err);
         });
     }
+  },
+  searchUser: (req, res) => {
+    const data = {
+      id: req.query.id || 0,
+      searchName: req.query.name || "",
+    };
+    mSearchUser(data)
+      .then((response) => {
+        success(res, response, {}, "Success Search User");
+      })
+      .catch((err) => {
+        failed(res, "Internal Server Error", []);
+      });
   },
 };
