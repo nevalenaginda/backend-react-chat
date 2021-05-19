@@ -1,25 +1,49 @@
-# Realtime & Chat
+<h1 align="center">Backend - Telegram</h1>
+<p align="center">
+  <a href="https://chatting-telegram.netlify.app/" target="_blank"><img src="https://github.com/chaerulmarwan20/telegram-app/raw/master/src/assets/screenshots/Telegram.png"  width="400" alt="Telegram" border="0" /></a>
+</p>
 
-Project membuat website chating seperti aplikasi telegram yang dapat diguanakan untuk personal chating secara realtime.
+## Table of Contents
 
----
+- [Introduction](#introduction)
+- [Features](#features)
+- [Built With](#built-with)
+- [Prerequisites](#prerequisites)
+- [Endpoint](#endpoint)
+- [Installation](#installation)
+- [Related Project](#related-project)
 
-### Modules
-1. [Expressjs]
-2. [MySql2]
-3. [Dotenv]
-4. [CORS]
-5. [Body Parser]
-6. [bcrypt]
-7. [jsonwebtoken]
-8. [nodemailer]
-9. [multer]
-10. [socket.io]
+## Introduction
 
-### Dev Modules
-1. [Nodemon]
+Project makes a chat website like a telegram application that can be used for realtime personal chat. This application was built for a week with the main tools namely express, mysql, react, and socket.io.
 
----
+## Features
+
+- Realtime chatting using socket.io
+
+- Realtime online/offline status using socket.io
+
+- Realtime notification using socket.io
+
+- JWT authentication
+
+- Nodemailer for email verification
+
+- Upload image using multer
+
+
+## Built With
+
+- [Expressjs]
+- [MySql2]
+- [Dotenv]
+- [CORS]
+- [Body Parser]
+- [bcrypt]
+- [jsonwebtoken]
+- [nodemailer]
+- [multer]
+- [socket.io]
 
 [Expressjs]: https://www.npmjs.com/package/express
 [MySql2]: https://www.npmjs.com/package/mysql2
@@ -33,14 +57,38 @@ Project membuat website chating seperti aplikasi telegram yang dapat diguanakan 
 [multer]: https://www.npmjs.com/package/multer
 [nodemailer]: https://www.npmjs.com/package/nodemailer
 
-### Tatacara
+## Prerequisites
 
-1. Silahkan download file ini.
-2. Silahkan buka file ini dalam satu folder di text editor  seperti VS Code atau sejenisnya
-3. Pastikan import database yang ada didalam file ```MySql``` sebagai database di MySql
-4. Silahkan ```CREATE``` file ```.env``` lalu buka file tersebut
-5. Patikan isi ``` PORT ``` yang akan kamu gunakan di file ``` .env ``` sesuaikan juga dengan yang ada di ``` app.listen ``` pada file ``` app.js ```
-6. Silahkan ganti nama database, user dan password pada file ``` .env ``` sesuai dengan MySql kalian. Umumnya seperti berikut:
+- [NodeJs](https://nodejs.org/en/download/)
+- [XAMPP](https://www.apachefriends.org/index.html)
+
+## Endpoint
+
+- User
+
+|  METHOD  |                          API                          |
+| :------: | :---------------------------------------------------: |
+|  `POST`  |                     /api/register                     |
+|  `GET`   |           /api/activate/:token/:email                 |
+|  `GET`   |    /api/resetPassword/:token/:email/:password         |
+|  `GET`   |                    /api/user/:id                      |
+|  `GET`   |                     /api/profile                      |
+|  `GET`   |                   /api/allUser/:id                    |
+|  `GET`   |                    /api/searchUser                    |
+|  `POST`  |                        api/login                      |
+|  `POST`  |                   /api/forgotPassword                 |
+|  `PATCH` |              /api/changePassword/:id                  |
+|  `PATCH` |                       /api/user/:id                   |
+|  `GET`   |                /api/chat/:idFrom/:idTo                |
+|  `DELETE`|                      /api/chat/:id                    |
+
+## Installation
+
+1. Open your terminal or command prompt. Then, clone the repository `git clone https://github.com/nevalenaginda/backend-react-chat.git`
+2. Create database named `chatan` and import `chatan.sql` from this repository
+3. Go to directory `cd backend-react-chat`
+4. Install all required packages `npm install`
+5. Create a new file named `.env`
 ```
 PORT = (Port yang kamu gunakan, misal 5000)
 DB_HOST = localhost
@@ -51,37 +99,9 @@ FROM_EMAIL = (Email yang kamu gunakan untuk mengirim pesan verifikasi)
 EMAIL_PASS = (Password email kamu, misal Password1234#)
 FRONTEND_PATH = (Alamat frontend kamu, misal http://localhost:3000)
 ```
-  
-Untuk pengguna OS windows biasanya bagian passowd di xampp itu kosong, tetapi pengguna Mac silahakn isi passwordnya.
+6. Run server `npm run dev'
 
-### Penggunaan
+## Related Project
 
-Silahkan buka terminal pada VS Code dengan menekan tombol
-```
-CTRL + SHIFT + `
-atau
-CTRL + SHIFT + C
-```
-Kemudian ketikan text berikut
-```
-"npm install"
-"npm run start" //untuk menjalankan nodemon cek di file package.json
-```
-guna untuk menjalankan project ini. Pastikan anda telah mengaktifkan XAMPP
-
----
-
-### Dokumentasi Api
-Kamu bisa melihat dokumentasi api [di sini](https://documenter.getpostman.com/view/13256965/TzRLkqi4)
-
----
-
-### Frontend
-Silahkan klik [di sini](https://github.com/nevalenaginda/frontend-react-chat)
-
----
-
-### Deploy
-Silahkan klik link berikut [ini](http://100.25.29.134:5010/)
-
----
+- :white_check_mark: [`Frontend Telegram`](https://github.com/nevalenaginda/frontend-react-chat/)
+- :rocket: [`Production`](https://telegram-webku.netlify.app/)
