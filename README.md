@@ -62,9 +62,7 @@ Project makes a chat website like a telegram application that can be used for re
 - [NodeJs](https://nodejs.org/en/download/)
 - [XAMPP](https://www.apachefriends.org/index.html)
 
-## Endpoint
-
-- User
+## API Endpoint
 
 |  METHOD  |                          API                          |
 | :------: | :---------------------------------------------------: |
@@ -90,14 +88,14 @@ Project makes a chat website like a telegram application that can be used for re
 4. Install all required packages `npm install`
 5. Create a new file named `.env`
 ```
-PORT = (Port yang kamu gunakan, misal 5000)
+PORT = (The port you are using, for example 5000)
 DB_HOST = localhost
 DB_USER = root
 DB_PASSWORD = 
-JWT_SECRET= (Misal AsxW123)
-FROM_EMAIL = (Email yang kamu gunakan untuk mengirim pesan verifikasi)
-EMAIL_PASS = (Password email kamu, misal Password1234#)
-FRONTEND_PATH = (Alamat frontend kamu, misal http://localhost:3000)
+JWT_SECRET= (For example AsxW123)
+FROM_EMAIL = (The email you used to send the verification message)
+EMAIL_PASS = (Your email password, for example Password1234 #)
+FRONTEND_PATH = (Your frontend address, for example http: // localhost: 3000)
 ```
 6. Run server `npm run dev'
 
