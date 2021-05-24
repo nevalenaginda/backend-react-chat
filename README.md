@@ -11,7 +11,7 @@
 - [Prerequisites](#prerequisites)
 - [Endpoint](#endpoint)
 - [Installation](#installation)
-- [Related Project](#related-project)
+- [Link](#link)
 
 ## Introduction
 
@@ -99,7 +99,7 @@ FRONTEND_PATH = (Your frontend address, for example http: // localhost: 3000)
 ```
 6. Run server `npm run dev'
 
-## Related Project
+## Link
 
 - :white_check_mark: [`Frontend Telegram`](https://github.com/nevalenaginda/frontend-react-chat/)
 - :rocket: [`Production`](https://telegram-webku.netlify.app/)
