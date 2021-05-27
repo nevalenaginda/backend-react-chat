@@ -11,6 +11,7 @@
 - [Prerequisites](#prerequisites)
 - [Endpoint](#endpoint)
 - [Installation](#installation)
+- [API Documentation](#api-documentation)
 - [Link](#link)
 
 ## Introduction
@@ -98,6 +99,9 @@ EMAIL_PASS = (Your email password, for example Password1234 #)
 FRONTEND_PATH = (Your frontend address, for example http: // localhost: 3000)
 ```
 6. Run server `npm run dev'
+
+## API Documentation
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/13256965/TzRLkqi4)
 
 ## Link
 
