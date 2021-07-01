@@ -25,6 +25,6 @@ app.use(chatRoute);
 // open route for public image
 app.use("/images", express.static("./public/images"));
 
-httpServer.listen(PORT, () => {
-  console.log("server is running on port " + PORT);
+httpServer.listen(PORT||5005, () => {
+  console.log("server is running");
 });
